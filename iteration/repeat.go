@@ -1,11 +1,7 @@
 package iteration
 
-const repeatCount = 5
+import "strings"
 
-func Repeat(c string) string {
-	var repeated string
-	for i := 0; i < repeatCount; i++ {
-		repeated += c
-	}
-	return repeated
+func Repeat(c string, count int) string {
+	return strings.Repeat(c, count)
 }
