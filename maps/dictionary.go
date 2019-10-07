@@ -35,3 +35,7 @@ func (dict Dictionary) Add(word, definition string) error {
 
 	return nil
 }
+
+func (dict Dictionary) Update(word, definition string) {
+	dict[word] = definition
+}
