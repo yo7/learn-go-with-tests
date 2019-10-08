@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	s := DefaultSleeper{}
-	Countdown(os.Stdout, &s)
+	sleeper := &ConfigurableSleeper{1 * time.Second, time.Sleep}
+	Countdown(os.Stdout, sleeper)
 }
 
 const coundDownStart = 3
@@ -28,10 +28,13 @@ type Sleeper interface {
 	Sleep()
 }
 
-type DefaultSleeper struct{}
+type ConfigurableSleeper struct {
+	duration time.Duration
+	sleep    func(time.Duration)
+}
 
-func (s *DefaultSleeper) Sleep() {
-	time.Sleep(time.Second * 1)
+func (s *ConfigurableSleeper) Sleep() {
+	s.sleep(s.duration)
 }
 
 type CountdownOperationSpy struct {
@@ -48,4 +51,12 @@ func (s *CountdownOperationSpy) Sleep() {
 func (s *CountdownOperationSpy) Write(p []byte) (n int, err error) {
 	s.Calls = append(s.Calls, write)
 	return
+}
+
+type SpyTime struct {
+	durationSlept time.Duration
+}
+
+func (s *SpyTime) Sleep(duration time.Duration) {
+	s.durationSlept = duration
 }
