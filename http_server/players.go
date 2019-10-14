@@ -7,27 +7,23 @@ import (
 )
 
 func main() {
-	handler := http.HandlerFunc(PlayerServer)
-	err := http.ListenAndServe(":5000", handler)
+	server := &PlayerServer{}
+	err := http.ListenAndServe(":5000", server)
 	if err != nil {
 		log.Fatalf("could not listen on port 5000 %v", err)
 	}
 }
 
-func PlayerServer(w http.ResponseWriter, r *http.Request) {
-	player := r.URL.Path[len("/players/"):]
-
-	fmt.Fprintf(w, GetPlayerScore(player))
+type PlayerStore interface {
+	GetPlayerScore(name string) int
 }
 
-func GetPlayerScore(p string) string {
-	if p == "Pepper" {
-		return "20"
-	}
+type PlayerServer struct {
+	store PlayerStore
+}
 
-	if p == "Floyd" {
-		return "10"
-	}
+func (p *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	player := r.URL.Path[len("/players/"):]
 
-	return ""
+	fmt.Fprint(w, p.store.GetPlayerScore(player))
 }
