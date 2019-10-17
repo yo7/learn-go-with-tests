@@ -22,6 +22,10 @@ func (s *StubPlayerStore) RecordWin(name string) {
 	s.winCalls = append(s.winCalls, name)
 }
 
+func (s *StubPlayerStore) GetLeague() []Player {
+	return s.league
+}
+
 func TestGetPlayers(t *testing.T) {
 	store := StubPlayerStore{
 		scores: map[string]int{
