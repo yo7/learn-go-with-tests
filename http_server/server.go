@@ -8,7 +8,7 @@ import (
 
 type Player struct {
 	Name string
-	Wis  int
+	Wins int
 }
 
 type PlayerServer struct {

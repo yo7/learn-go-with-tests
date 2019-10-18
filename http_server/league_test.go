@@ -31,11 +31,13 @@ func TestLeague(t *testing.T) {
 }
 
 func assertContentType(t *testing.T, response *httptest.ResponseRecorder, want string) {
+	t.Helper()
 	got := response.Result().Header.Get("content-type")
 	if got != want {
 		t.Errorf("response did not have content-type of %q, got %q", want, got)
 	}
 }
+
 func getLeagueFromResponse(t *testing.T, response *httptest.ResponseRecorder) (league []Player) {
 	t.Helper()
 
